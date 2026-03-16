@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { analyzeText, analyzeAudio } from "../services/api";
 import "./AnalyzePage.css";
 
 const SAMPLE_RESULTS = {
@@ -79,28 +80,59 @@ export default function AnalyzePage({ onBack, onResults }) {
   const handleAnalyze = async () => {
     if (tab === "text" && !text.trim()) return;
     if (tab === "audio" && audioFiles.length === 0) return;
-
+  
     setLoading(true);
     setLoadStep(0);
+  
+    try {
+      if (tab === "text") {
+        // TEXT PIPELINE
+        setLoadStep(0); // "Detecting language..."
+  
+        const realResult = await analyzeText(text);
+  
+        setLoadStep(LOAD_STEPS.length - 1);
+        await new Promise(r => setTimeout(r, 400));
+  
+        onResults(realResult);
+  
+      } else {
+        // AUDIO PIPELINE
+        setLoadStep(1); // "Transcribing audio..."
+        
+        // 1. Get the array of all analyzed files
+        const realResultArray = await analyzeAudio(audioFiles);
+        
+        // 2. Filter out any files that failed (e.g., if they uploaded a corrupted mp3)
+        const validResults = realResultArray.filter(r => r.status !== "error");
+        
+        if (validResults.length === 0) {
+          alert("Could not analyze any of the audio files. Please try again.");
+          setLoading(false);
+          return;
+        }
 
-    // Simulate loading steps
-    for (let i = 0; i < LOAD_STEPS.length; i++) {
-      await new Promise(r => setTimeout(r, 700));
-      setLoadStep(i + 1);
+        // 3. Sort them so the highest risk score is at the top
+        validResults.sort((a, b) => b.risk_score - a.risk_score);
+        
+        // 4. Grab the absolute most dangerous file
+        const highestThreatFile = validResults[0];
+
+        setLoadStep(LOAD_STEPS.length - 1); 
+        await new Promise(r => setTimeout(r, 400));
+        
+        // 5. Pass ONLY the highest threat object to the Dashboard
+        onResults(highestThreatFile);
+      }
+  
+    } catch (error) {
+      console.error("Backend Error:", error);
+      alert("Failed to connect to backend. Is FastAPI running?");
+      setLoading(false);
     }
-
-    await new Promise(r => setTimeout(r, 400));
-    setLoading(false);
-
-    // Pass sample results (replace with real API call)
-    onResults({
-      type: tab,
-      input: tab === "text" ? text : audioFiles.map(f => f.name),
-      language,
-      ...SAMPLE_RESULTS[tab],
-    });
   };
 
+  
   return (
     <div className="analyze-page">
       <div className="analyze-bg">
