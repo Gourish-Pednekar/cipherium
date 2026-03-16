@@ -1,0 +1,241 @@
+.dashboard {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.db-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.db-glow {
+  position: absolute;
+  width: 600px; height: 300px;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.08;
+}
+.db-glow-safe { background: var(--safe); }
+.db-glow-warn { background: var(--warn); }
+.db-glow-danger { background: var(--danger); }
+
+/* Header */
+.db-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,15,0.7);
+}
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+
+/* Alert Banner */
+.alert-banner {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 40px;
+  font-size: 14px;
+}
+.alert-safe { background: rgba(0,214,143,0.1); border-bottom: 1px solid rgba(0,214,143,0.2); }
+.alert-warn { background: rgba(255,179,71,0.1); border-bottom: 1px solid rgba(255,179,71,0.2); }
+.alert-danger { background: rgba(255,71,87,0.1); border-bottom: 1px solid rgba(255,71,87,0.2); }
+.alert-icon { font-size: 20px; flex-shrink: 0; }
+.alert-msg { flex: 1; color: var(--text); }
+.alert-badge {
+  font-size: 12px;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+/* Body */
+.db-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  align-items: start;
+}
+.db-main { display: flex; flex-direction: column; gap: 20px; }
+.db-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+/* Card */
+.db-card {
+  animation: fadeUp 0.5s ease both;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Risk Overview */
+.risk-overview {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.risk-meter { flex-shrink: 0; }
+.risk-details { flex: 1; }
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.detail-row:last-of-type { border-bottom: none; }
+.detail-label { color: var(--text2); }
+.detail-value { font-weight: 500; }
+.risk-summary {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  padding: 12px;
+  background: var(--bg3);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--danger);
+}
+
+/* Segments */
+.segments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.segment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  animation: fadeUp 0.4s ease both;
+}
+.segment-danger {
+  background: var(--danger-dim);
+  border: 1px solid rgba(255,71,87,0.2);
+}
+.segment-warn {
+  background: var(--warn-dim);
+  border: 1px solid rgba(255,179,71,0.2);
+}
+.segment-text {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text);
+  flex: 1;
+}
+
+/* Tactics */
+.tactics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.tactic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  animation: fadeUp 0.4s ease both;
+  transition: all 0.2s;
+}
+.tactic-card:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+}
+.tactic-icon { font-size: 22px; }
+.tactic-name { font-size: 11px; color: var(--text2); line-height: 1.4; font-weight: 500; }
+
+/* Bar Chart */
+.bar-chart { display: flex; flex-direction: column; gap: 14px; }
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeUp 0.5s ease both;
+}
+.bar-label { font-size: 12px; color: var(--text2); width: 80px; flex-shrink: 0; }
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg3);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  min-width: 4px;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-count { font-size: 13px; font-weight: 700; width: 20px; text-align: right; flex-shrink: 0; }
+
+/* Radar */
+.radar-wrap { display: flex; justify-content: center; padding: 8px 0; }
+
+/* Action Card */
+.action-card { }
+.action-safe { border-color: rgba(0,214,143,0.2); }
+.action-warn { border-color: rgba(255,179,71,0.2); }
+.action-danger { border-color: rgba(255,71,87,0.2); }
+.action-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* Actions */
+.db-actions { display: flex; flex-direction: column; gap: 8px; }
+.btn-sm { padding: 8px 16px; font-size: 13px; }
+
+@media (max-width: 900px) {
+  .db-body { grid-template-columns: 1fr; padding: 20px; }
+  .db-sidebar { }
+  .risk-overview { flex-direction: column; text-align: center; }
+  .tactics-grid { grid-template-columns: repeat(2, 1fr); }
+  .alert-banner { padding: 12px 20px; }
+  .db-header { padding: 14px 20px; }
+}
